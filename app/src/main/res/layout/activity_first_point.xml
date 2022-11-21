@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_16sdp"
+            android:layout_marginRight="@dimen/_16sdp"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:gravity="center"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_18ssp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:gravity="right"
+                android:lineSpacingExtra="@dimen/_8sdp"
+                android:text="در نقطه A قرار بگیرید."
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12ssp" />
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/coordinatorDirection"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:background="@drawable/bg_primary_circle_soft"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:text="N"
+                    android:textColor="@color/colorDark"
+                    android:textSize="@dimen/_14sdp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:text="S"
+                    android:textColor="@color/colorDark"
+                    android:textSize="@dimen/_14sdp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:text="W"
+                    android:textColor="@color/colorDark"
+                    android:textSize="@dimen/_14sdp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|right"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:text="E"
+                    android:textColor="@color/colorDark"
+                    android:textSize="@dimen/_14sdp" />
+
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:id="@+id/coordinatorAngle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <View
+                        android:layout_width="@dimen/_3sdp"
+                        android:layout_height="@dimen/_90sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/bg_arrow" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:layout_gravity="top|center"
+                        app:srcCompat="@drawable/ic_chevron_up"
+                        app:tint="@color/colorPrimary" />
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_32sdp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAngel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_secondary_rounded_soft"
+                    android:gravity="center"
+                    android:lineSpacingExtra="@dimen/_8sdp"
+                    android:padding="@dimen/_8sdp"
+                    android:text="0"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/_14ssp"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAngelDiff"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_secondary_rounded_outline"
+                    android:gravity="center"
+                    android:lineSpacingExtra="@dimen/_8sdp"
+                    android:padding="@dimen/_8sdp"
+                    android:text="0"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/_14ssp"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSoundAmp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_success_rounded_soft"
+                    android:gravity="center"
+                    android:lineSpacingExtra="@dimen/_8sdp"
+                    android:padding="@dimen/_8sdp"
+                    android:text="0 dB"
+                    android:textColor="@color/colorSuccess"
+                    android:textSize="@dimen/_14ssp"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTimer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_warning_rounded_soft"
+                    android:gravity="center"
+                    android:lineSpacingExtra="@dimen/_8sdp"
+                    android:padding="@dimen/_8sdp"
+                    android:text="0"
+                    android:textColor="@color/colorWarning"
+                    android:textSize="@dimen/_14ssp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <com.masoudss.lib.WaveformSeekBar
+                android:id="@+id/waveformSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_56sdp"
+                app:wave_background_color="@color/colorInformation"
+                app:wave_corner_radius="@dimen/_2sdp"
+                app:wave_gap="@dimen/_2sdp"
+                app:wave_gravity="center"
+                app:wave_max_progress="1000"
+                app:wave_min_height="@dimen/_5sdp"
+                app:wave_progress="0"
+                app:wave_progress_color="@color/colorPrimary"
+                app:wave_visible_progress="1000"
+                app:wave_width="@dimen/_2sdp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAverage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="center"
+                android:lineSpacingExtra="@dimen/_8sdp"
+                android:padding="@dimen/_8sdp"
+                android:text=""
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnNext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_120sdp"
+                android:background="@drawable/bg_primary_rounded_default"
+                android:gravity="center"
+                android:lineSpacingExtra="@dimen/_8sdp"
+                android:padding="@dimen/_8sdp"
+                android:text="تایید و ادامه"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

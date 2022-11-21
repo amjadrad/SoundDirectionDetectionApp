@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_16sdp"
+            android:layout_marginRight="@dimen/_16sdp"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:gravity="center"
+                android:text="راهنمای استفاده"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_18ssp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:gravity="right"
+                android:lineSpacingExtra="@dimen/_8sdp"
+                android:text="برای بررسی جهت صدا ما از برآیند بیشترین جهت صدا در چهارجهت جغرافیایی شمال، شرق، جنوب و غرب استفاده می کنیم و این کار تا جا جایی ادامه میدیم که به یک نقطه با بیشترین میزان صوت برسیم."
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12ssp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_help_1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:lineSpacingExtra="@dimen/_8sdp"
+                android:text="روش کار"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:gravity="right"
+                android:lineSpacingExtra="@dimen/_8sdp"
+                android:text="ابتدا در یک نقطه بایستید. این نقطه مکان A برای شما خواهد بود. سپس در چهارجهت جغرافیایی صدا را اندازه گیری میکنیم."
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12ssp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:gravity="right"
+                android:lineSpacingExtra="@dimen/_8sdp"
+                android:text="حال به نقطه B بروید. فاصله نقطه A تا نقطه B را به عنوان d یادداشت کنید."
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12ssp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:gravity="right"
+                android:lineSpacingExtra="@dimen/_8sdp"
+                android:text="برای نقطه B نیز همانند قبل صدا را دریافت کنید."
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12ssp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:gravity="right"
+                android:lineSpacingExtra="@dimen/_8sdp"
+                android:text="بیشترین میزان دریافت صدا در نقطه A در دو جهت مختلف و همین طور در نقطه B پیدا کنید."
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12ssp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:gravity="right"
+                android:lineSpacingExtra="@dimen/_8sdp"
+                android:text="بر اساس جهت ها، برآیند آنها را به دست آورید. این برآیند به شما نقطه C را نشان خواهد داد که به منبع تولید صدا نزدیک تر است."
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12ssp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:gravity="right"
+                android:lineSpacingExtra="@dimen/_8sdp"
+                android:text="این کار را تا زمانی که به منبع صوت میرسید می توانید انجام دهید."
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12ssp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnNext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_32sdp"
+                android:layout_marginBottom="@dimen/_120sdp"
+                android:background="@drawable/bg_primary_rounded_default"
+                android:gravity="center"
+                android:lineSpacingExtra="@dimen/_8sdp"
+                android:padding="@dimen/_8sdp"
+                android:text="ادامه"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
