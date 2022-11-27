@@ -1,12 +1,8 @@
 package com.elham.sound_direction_detection_app.ui.steps_1_set_distance;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Toast;
-
-import androidx.core.app.ActivityCompat;
 
 import com.elham.sound_direction_detection_app.app.AppGlobalVariables;
 import com.elham.sound_direction_detection_app.databinding.ActivitySelectDistanceBinding;

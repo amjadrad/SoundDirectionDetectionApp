@@ -4,20 +4,12 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
 import com.elham.sound_direction_detection_app.databinding.ActivityHelpBinding;
 import com.elham.sound_direction_detection_app.ui.base.BaseActivity;
 import com.elham.sound_direction_detection_app.ui.steps_1_set_distance.SetDistanceActivity;
-
-import java.io.File;
-import java.util.List;
-
-import linc.com.amplituda.Amplituda;
-import linc.com.amplituda.exceptions.io.AmplitudaIOException;
-import linc.com.library.AudioTool;
 
 public class HelpActivity extends BaseActivity {
 

@@ -26,40 +26,6 @@ public class ShowResultActivity extends BaseActivity {
             finish();
         });
 
-
-//        //Point A
-//        int averageAN = 0;
-//        int averageAE = 0;
-//        int averageAS = 0;
-//        int averageAW = 0;
-//        //Point B
-//        int averageBN = 0;
-//        int averageBE = 0;
-//        int averageBS = 0;
-//        int averageBW = 0;
-
-//        for (int i = 0; i < 1000; i++) {
-//            averageAN += AppGlobalVariables.data[AppGlobalVariables.currentPointIndex - 1][0][i];
-//            averageAE += AppGlobalVariables.data[AppGlobalVariables.currentPointIndex - 1][1][i];
-//            averageAS += AppGlobalVariables.data[AppGlobalVariables.currentPointIndex - 1][2][i];
-//            averageAW += AppGlobalVariables.data[AppGlobalVariables.currentPointIndex - 1][3][i];
-//
-//            averageBN += AppGlobalVariables.data[AppGlobalVariables.currentPointIndex][0][i];
-//            averageBE += AppGlobalVariables.data[AppGlobalVariables.currentPointIndex][1][i];
-//            averageBS += AppGlobalVariables.data[AppGlobalVariables.currentPointIndex][2][i];
-//            averageBW += AppGlobalVariables.data[AppGlobalVariables.currentPointIndex][3][i];
-//        }
-//        averageAN /= 1000;
-//        averageAE /= 1000;
-//        averageAS /= 1000;
-//        averageAW /= 1000;
-//
-//        averageBN /= 1000;
-//        averageBE /= 1000;
-//        averageBS /= 1000;
-//        averageBW /= 1000;
-
-
         //Point A
         int averageAN = AppGlobalVariables.data[AppGlobalVariables.currentPointIndex - 1][0];
         int averageAE = AppGlobalVariables.data[AppGlobalVariables.currentPointIndex - 1][1];
@@ -72,6 +38,7 @@ public class ShowResultActivity extends BaseActivity {
         int averageBW = AppGlobalVariables.data[AppGlobalVariables.currentPointIndex][3];
 
 
+        //Just for show averages in logcat
         Log.d(TAG, "doSteps:AVN " + averageAN);
         Log.d(TAG, "doSteps:AVE " + averageAE);
         Log.d(TAG, "doSteps:AVS " + averageAS);
@@ -82,6 +49,7 @@ public class ShowResultActivity extends BaseActivity {
         Log.d(TAG, "doSteps:BVS " + averageBS);
         Log.d(TAG, "doSteps:BVW " + averageBW);
 
+        //Attach results for pint a like: NE | NW | SE | SW
         char firstDirectionPointA = 'N';
         if (averageAS > averageAN) {
             firstDirectionPointA = 'S';
@@ -106,35 +74,12 @@ public class ShowResultActivity extends BaseActivity {
         Log.d(TAG, "onCreate: a: " + a);
         Log.d(TAG, "onCreate: b: " + b);
 
-//        String result = AppGlobalVariables.getVectorsResultForPointA(String.format("%s:%s", a, b));
-//        Log.d(TAG, "onCreate: Result is: " + result);
-//
-//        if (result.equals("ERROR")) {
-//            binding.tvResultStartFromA.setText("خطا! این خطا ممکن است به علت خطاهای اندازه گیری و یا نویز بالا اتفاق افتاده باشد. لطفا مجدد امتحان کنید.");
-//        } else {
-//
-//            //Because microphone sensor is in front of phone, North is South and West is East
-//            String message = "";
-//            String[] arrResult = result.split(",");
-//            if (arrResult.length > 0) {
-//                String[] arr = arrResult[0].split(":");
-//                message += String.format("%s متر به سمت %s،", (Integer.parseInt(arr[0]) * AppGlobalVariables.distance), AppGlobalVariables.getDirectionPersianNameForBottomSensors(arr[1]));
-//            }
-//            if (arrResult.length > 1) {
-//                String[] arr = arrResult[1].split(":");
-//                message += String.format("%s متر به سمت %s", (Integer.parseInt(arr[0]) * AppGlobalVariables.distance), AppGlobalVariables.getDirectionPersianNameForBottomSensors(arr[1]));
-//            }
-//            message += " حرکت کنید.";
-//            binding.tvResultStartFromA.setText(message);
-//        }
-
+        binding.tvFormula.setText(String.format("%s:%s", a, b));
         String resultB = AppGlobalVariables.getVectorsResultForPointB(String.format("%s:%s", a, b));
         Log.d(TAG, "onCreate: Result is: " + resultB);
-
         if (resultB.equals("ERROR")) {
             binding.tvResultStartFromB.setText("خطا! این خطا ممکن است به علت خطاهای اندازه گیری و یا نویز بالا اتفاق افتاده باشد. لطفا مجدد امتحان کنید.");
         } else {
-            //if start from point B
             String messageB = "";
             String[] arrResultB = resultB.split(",");
             if (arrResultB.length > 0) {
@@ -146,10 +91,7 @@ public class ShowResultActivity extends BaseActivity {
                 messageB += String.format("%s متر به سمت %s", (Integer.parseInt(arr[0]) * AppGlobalVariables.distance), AppGlobalVariables.getDirectionPersianNameForBottomSensors(arr[1]));
             }
             messageB += " حرکت کنید.";
-
             binding.tvResultStartFromB.setText(messageB);
         }
-
-
     }
 }

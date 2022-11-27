@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_16sdp"
                 android:gravity="center"
-                android:text="2E:2S"
+                android:text=""
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold" />

@@ -1,16 +1,13 @@
 package com.elham.sound_direction_detection_app.ui.steps_2_get_point_sound;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.VibrationEffect;
@@ -19,34 +16,26 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.widget.Toast;
 
 import com.elham.sound_direction_detection_app.app.AppGlobalVariables;
 import com.elham.sound_direction_detection_app.databinding.ActivityFirstPointBinding;
 import com.elham.sound_direction_detection_app.ui.base.BaseActivity;
-import com.elham.sound_direction_detection_app.ui.help.HelpActivity;
 import com.elham.sound_direction_detection_app.ui.steps_3_show_result.ShowResultActivity;
 import com.elham.sound_direction_detection_app.utils.OrientationUtils;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 import linc.com.amplituda.Amplituda;
 import linc.com.amplituda.exceptions.io.AmplitudaIOException;
 import linc.com.library.AudioTool;
 
-public class GetPointSoundActivity extends BaseActivity implements View.OnClickListener, SensorEventListener {
+public class GetPointSoundActivity extends BaseActivity implements View.OnClickListener {
 
     private final String TAG = this.getClass().getName();
     private ActivityFirstPointBinding binding;
-    private SensorManager mSensorManager;
-    private Sensor mRotationSensor;
-    private static final int SENSOR_DELAY = 500 * 1000; // 500ms
-    private static final int FROM_RADS_TO_DEGS = -57;
-    private MediaRecorder mRecorder;
-    private int dataCounter = 0;
     private static double mEMA = 0.0;
+    private MediaRecorder mRecorder;
     private static final double EMA_FILTER = 0.6;
     private int step = 1;
     private char currentDirection = 'N';
@@ -55,6 +44,7 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
     private OrientationUtils orientationUtils;
     private int[] wavesArray;
     private int wavesArrayCounter;
+    private File tempSoundFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,16 +54,9 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
         binding.btnNext.setOnClickListener(this);
         binding.tvTitle.setText(String.format("دریافت صدا در نقطه %c", (char) AppGlobalVariables.currentPointAsciiCode));
         //Prepare
+        File folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        tempSoundFile = new File(folder, "temp_sound.wav");
         setupOrientation();
-//        try {
-//            mSensorManager = (SensorManager) getSystemService(Activity.SENSOR_SERVICE);
-////            mRotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-//            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
-//                    SensorManager.SENSOR_DELAY_GAME);
-//            mSensorManager.registerListener(this, mRotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
-//        } catch (Exception e) {
-//            Toast.makeText(this, "Hardware compatibility issue", Toast.LENGTH_LONG).show();
-//        }
         //Do it
         doSteps();
     }
@@ -111,7 +94,7 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
         an.setRepeatCount(0);
         an.setFillAfter(true);
         binding.coordinatorAngle.startAnimation(an);
-        binding.tvAngel.setText(String.format("\u2103 %s", Math.round(azimuth)));
+        binding.tvAngel.setText(String.format("%s", Math.round(azimuth)));
 
         //North
         if (step == 2) {
@@ -171,9 +154,7 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
     private OrientationUtils.OrientationListener getCompassListener() {
         return azimuth -> {
             // UI updates only in UI thread
-            runOnUiThread(() -> {
-                adjustArrow(azimuth);
-            });
+            runOnUiThread(() -> adjustArrow(azimuth));
         };
     }
 
@@ -181,10 +162,10 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
         showLoading();
         new Handler(Looper.getMainLooper()).post(() -> {
             Log.d(TAG, "processSoundThreadInit: Start processing.............");
-            File file = new File("/storage/emulated/0/Download/temp_sound.wav");
+
             try {
                 AudioTool.getInstance(GetPointSoundActivity.this)
-                        .withAudio(file)
+                        .withAudio(tempSoundFile)
                         .generateWaveform(2048, 2048, "#f84a91", "/storage/emulated/0/Download/wave_for_point_" + (char) AppGlobalVariables.currentPointAsciiCode + "_direction_" + currentDirectionIndex + "_before.png", null)
                         .removeAudioNoise(output -> {
                         })
@@ -204,7 +185,6 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
                                         AppGlobalVariables.data[AppGlobalVariables.currentPointIndex][currentDirectionIndex] = (int) average;
                                         GetPointSoundActivity.this.dismissLoading();
                                         binding.tvAverage.setText(String.format("%s\nمتوسط %s (%s میکروفن پایین) = %s", binding.tvAverage.getText().toString(), AppGlobalVariables.getDirectionPersianName(String.valueOf(currentDirection)), AppGlobalVariables.getDirectionPersianNameForBottomSensors(String.valueOf(currentDirection)), (int) average));
-
                                         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                             v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -238,80 +218,6 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
             }
         });
     }
-
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-// TODO Auto-generated method stub
-    }
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-//        Log.d(TAG, "onSensorChanged:L: " + event.values.length);
-//        Log.d(TAG, "onSensorChanged:L:V1: " + event.values[0]);
-//        if (event.sensor == mRotationSensor) {
-//            if (event.values.length > 4) {
-//                float[] truncatedRotationVector = new float[4];
-//                System.arraycopy(event.values, 0, truncatedRotationVector, 0, 4);
-//                updateDegree(truncatedRotationVector);
-//            } else {
-//                updateDegree(event.values);
-//            }
-//        }
-    }
-
-    private void updateDegree(float[] vectors) {
-        float[] rotationMatrix = new float[9];
-        SensorManager.getRotationMatrixFromVector(rotationMatrix, vectors);
-        int worldAxisX = SensorManager.AXIS_X;
-        int worldAxisZ = SensorManager.AXIS_Z;
-        float[] adjustedRotationMatrix = new float[9];
-        SensorManager.remapCoordinateSystem(rotationMatrix, worldAxisX, worldAxisZ, adjustedRotationMatrix);
-        float[] orientation = new float[3];
-
-        SensorManager.getOrientation(adjustedRotationMatrix, orientation);
-        int rotationY = (int) (rotationMatrix[2] * FROM_RADS_TO_DEGS);
-        if (rotationY < 0) {
-            rotationY = 360 + rotationY;
-        }
-        binding.coordinatorAngle.setRotation(-1 * rotationY);
-        //North
-        if (step == 2) {
-            if (rotationY < 10 || rotationY > 350) {
-                binding.btnNext.setVisibility(View.VISIBLE);
-            } else {
-                binding.btnNext.setVisibility(View.GONE);
-            }
-        }
-        //East
-        if (step == 4) {
-            if (rotationY > 260 && rotationY < 280) {
-                binding.btnNext.setVisibility(View.VISIBLE);
-            } else {
-                binding.btnNext.setVisibility(View.GONE);
-            }
-        }
-        //South
-        if (step == 6) {
-            if (rotationY > 170 && rotationY < 190) {
-                binding.btnNext.setVisibility(View.VISIBLE);
-            } else {
-                binding.btnNext.setVisibility(View.GONE);
-            }
-        }
-        //West
-        if (step == 8) {
-            if (rotationY > 80 && rotationY < 100) {
-                binding.btnNext.setVisibility(View.VISIBLE);
-            } else {
-                binding.btnNext.setVisibility(View.GONE);
-            }
-        }
-        if (step == 10) {
-            binding.btnNext.setVisibility(View.VISIBLE);
-        }
-    }
-
 
     private void doSteps() {
         switch (step) {
@@ -407,14 +313,12 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
     }
 
     private void startTimer() {
-//        dataCounter = 0;
         wavesArrayCounter = 0;
         wavesArray = new int[1000];
         binding.tvTimer.setVisibility(View.VISIBLE);
         new CountDownTimer(10000, 10) {
             @Override
             public void onTick(long l) {
-//                AppGlobalVariables.data[AppGlobalVariables.currentPointIndex][currentDirectionIndex][dataCounter++] = (int) getAmplitudeEMA();
                 binding.tvTimer.setText(String.valueOf(l / 1000));
                 if (l % 5 == 0) {
                     binding.tvSoundAmp.setText(String.format("%s dB", Math.round(getAmplitudeEMA())));
@@ -439,7 +343,7 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-            mRecorder.setOutputFile("/storage/emulated/0/Download/temp_sound.wav");
+            mRecorder.setOutputFile(tempSoundFile.getAbsolutePath());
             try {
                 mRecorder.prepare();
             } catch (java.io.IOException ioe) {

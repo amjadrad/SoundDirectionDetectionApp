@@ -1,13 +1,9 @@
 package com.elham.sound_direction_detection_app.ui.base;
 
-
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +12,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.elham.sound_direction_detection_app.R;
 
 import java.util.Stack;
-
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -31,22 +26,6 @@ public class BaseActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-    }
-
-    protected void setFullScreen() {
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    }
-
-    public static void hideKeyboard(Activity activity, View view) {
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
-    public static void showKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     protected void showLoading() {
@@ -65,9 +44,5 @@ public class BaseActivity extends AppCompatActivity {
             }
             loadingViewsStack.clear();
         }
-    }
-
-    public <T> boolean isNotNull(T t) {
-        return t != null;
     }
 }
