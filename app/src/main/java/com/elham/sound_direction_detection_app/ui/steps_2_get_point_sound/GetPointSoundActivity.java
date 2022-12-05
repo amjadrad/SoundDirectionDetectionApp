@@ -193,18 +193,15 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
                                     .get(result -> {
                                         List<Integer> amplitudesData = result.amplitudesAsList();
                                         float average = 0;
-                                        float average2 = 0;
                                         binding.tvSoundAmp.setText(amplitudesData.size()+"-");
                                         for (Integer i : amplitudesData) {
-                                            average += (i * 1000);
-                                            average2 += (1 - (degreeDifferenceArray[i] / 180)) * (i * 1000);
+                                            average += (1 - (degreeDifferenceArray[i] / 180)) * (i * 1000);
 //                                            Log.d(TAG, "processSound:  " + i);
                                         }
                                         average /= amplitudesData.size();
-                                        average2 /= amplitudesData.size();
                                         AppGlobalVariables.data[AppGlobalVariables.currentPointIndex][currentDirectionIndex] = (int) average;
                                         GetPointSoundActivity.this.dismissLoading();
-                                        binding.tvAverage.setText(String.format("%s\nمتوسط %s (%s میکروفن پایین) = %s :@>:%s", binding.tvAverage.getText().toString(), AppGlobalVariables.getDirectionPersianName(String.valueOf(currentDirection)), AppGlobalVariables.getDirectionPersianNameForBottomSensors(String.valueOf(currentDirection)), (int) average , (int)average2));
+                                        binding.tvAverage.setText(String.format("%s\nمتوسط %s (%s میکروفن پایین) = %s", binding.tvAverage.getText().toString(), AppGlobalVariables.getDirectionPersianName(String.valueOf(currentDirection)), AppGlobalVariables.getDirectionPersianNameForBottomSensors(String.valueOf(currentDirection)), (int) average));
                                         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                             v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
