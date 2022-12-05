@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">تشخیص جهت صدا</string>
+    <string name="ready_msg">Recognition started!</string>
+
 </resources>

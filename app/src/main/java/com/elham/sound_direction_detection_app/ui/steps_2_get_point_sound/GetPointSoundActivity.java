@@ -45,6 +45,9 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
     private int[] wavesArray;
     private int wavesArrayCounter;
     private File tempSoundFile;
+    private float[] degreeDifferenceArray;
+    private float degreeDifference = 0;
+    private int degreeDifferenceIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +102,7 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
         //North
         if (step == 2) {
             float temp = azimuth > 180 ? (360 - azimuth) : azimuth;
+            degreeDifference = temp;
             binding.tvAngelDiff.setText(String.format("\u2103 %s", Math.round(temp)));
             if (azimuth < 10 || azimuth > 350) {
                 binding.btnNext.setVisibility(View.VISIBLE);
@@ -108,11 +112,14 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
         }
         if (step == 3) {
             float temp = azimuth > 180 ? (360 - azimuth) : azimuth;
+            degreeDifference = temp;
             binding.tvAngelDiff.setText(String.format("\u2103 %s", Math.round(temp)));
         }
         //East
         if (step == 4) {
-            binding.tvAngelDiff.setText(String.format("\u2103 %s", Math.round(Math.abs(90 - azimuth))));
+            float temp = 90 - azimuth;
+            degreeDifference = temp;
+            binding.tvAngelDiff.setText(String.format("\u2103 %s", Math.round(Math.abs(temp))));
             if (azimuth > 80 && azimuth < 100) {
                 binding.btnNext.setVisibility(View.VISIBLE);
             } else {
@@ -120,11 +127,15 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
             }
         }
         if (step == 5) {
-            binding.tvAngelDiff.setText(String.format("\u2103 %s", Math.round(Math.abs(90 - azimuth))));
+            float temp = 90 - azimuth;
+            degreeDifference = temp;
+            binding.tvAngelDiff.setText(String.format("\u2103 %s", Math.round(Math.abs(temp))));
         }
         //South
         if (step == 6) {
-            binding.tvAngelDiff.setText(String.format("\u2103 %s", Math.round(Math.abs(180 - azimuth))));
+            float temp = 180 - azimuth;
+            degreeDifference = temp;
+            binding.tvAngelDiff.setText(String.format("\u2103 %s", Math.round(Math.abs(temp))));
             if (azimuth > 170 && azimuth < 190) {
                 binding.btnNext.setVisibility(View.VISIBLE);
             } else {
@@ -132,11 +143,15 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
             }
         }
         if (step == 7) {
-            binding.tvAngelDiff.setText(String.format("\u2103 %s", Math.round(Math.abs(180 - azimuth))));
+            float temp = 180 - azimuth;
+            degreeDifference = temp;
+            binding.tvAngelDiff.setText(String.format("\u2103 %s", Math.round(Math.abs(temp))));
         }
         //West
         if (step == 8) {
-            binding.tvAngelDiff.setText(String.format("\u2103 %s", Math.round(Math.abs(270 - azimuth))));
+            float temp = 270 - azimuth;
+            degreeDifference = temp;
+            binding.tvAngelDiff.setText(String.format("\u2103 %s", Math.round(Math.abs(temp))));
             if (azimuth > 260 && azimuth < 280) {
                 binding.btnNext.setVisibility(View.VISIBLE);
             } else {
@@ -144,7 +159,9 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
             }
         }
         if (step == 9) {
-            binding.tvAngelDiff.setText(String.format("\u2103 %s", Math.round(Math.abs(270 - azimuth))));
+            float temp = 270 - azimuth;
+            degreeDifference = temp;
+            binding.tvAngelDiff.setText(String.format("\u2103 %s", Math.round(Math.abs(temp))));
         }
         if (step == 10) {
             binding.btnNext.setVisibility(View.VISIBLE);
@@ -162,29 +179,32 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
         showLoading();
         new Handler(Looper.getMainLooper()).post(() -> {
             Log.d(TAG, "processSoundThreadInit: Start processing.............");
-
             try {
                 AudioTool.getInstance(GetPointSoundActivity.this)
                         .withAudio(tempSoundFile)
                         .generateWaveform(2048, 2048, "#f84a91", "/storage/emulated/0/Download/wave_for_point_" + (char) AppGlobalVariables.currentPointAsciiCode + "_direction_" + currentDirectionIndex + "_before.png", null)
-                        .removeAudioNoise(output -> {
-                        })
-                        .removeVocal(output -> {
-                        })
+//                        .removeAudioNoise(output -> {
+//                        })
+//                        .removeVocal(output -> {
+//                        })
                         .normalizeAudioVolume(output -> {
                             Amplituda amplituda = new Amplituda(GetPointSoundActivity.this);
-                            /* Step 2: process audio and handle result */
                             amplituda.processAudio(output)
                                     .get(result -> {
                                         List<Integer> amplitudesData = result.amplitudesAsList();
                                         float average = 0;
+                                        float average2 = 0;
+                                        binding.tvSoundAmp.setText(amplitudesData.size()+"-");
                                         for (Integer i : amplitudesData) {
                                             average += (i * 1000);
+                                            average2 += (1 - (degreeDifferenceArray[i] / 180)) * (i * 1000);
+//                                            Log.d(TAG, "processSound:  " + i);
                                         }
                                         average /= amplitudesData.size();
+                                        average2 /= amplitudesData.size();
                                         AppGlobalVariables.data[AppGlobalVariables.currentPointIndex][currentDirectionIndex] = (int) average;
                                         GetPointSoundActivity.this.dismissLoading();
-                                        binding.tvAverage.setText(String.format("%s\nمتوسط %s (%s میکروفن پایین) = %s", binding.tvAverage.getText().toString(), AppGlobalVariables.getDirectionPersianName(String.valueOf(currentDirection)), AppGlobalVariables.getDirectionPersianNameForBottomSensors(String.valueOf(currentDirection)), (int) average));
+                                        binding.tvAverage.setText(String.format("%s\nمتوسط %s (%s میکروفن پایین) = %s :@>:%s", binding.tvAverage.getText().toString(), AppGlobalVariables.getDirectionPersianName(String.valueOf(currentDirection)), AppGlobalVariables.getDirectionPersianNameForBottomSensors(String.valueOf(currentDirection)), (int) average , (int)average2));
                                         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                             v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -313,12 +333,16 @@ public class GetPointSoundActivity extends BaseActivity implements View.OnClickL
     }
 
     private void startTimer() {
+        degreeDifference = 0;
+        degreeDifferenceArray = new float[1000];
+        degreeDifferenceIndex = 0;
         wavesArrayCounter = 0;
         wavesArray = new int[1000];
         binding.tvTimer.setVisibility(View.VISIBLE);
         new CountDownTimer(10000, 10) {
             @Override
             public void onTick(long l) {
+                degreeDifferenceArray[degreeDifferenceIndex++] = degreeDifference;
                 binding.tvTimer.setText(String.valueOf(l / 1000));
                 if (l % 5 == 0) {
                     binding.tvSoundAmp.setText(String.format("%s dB", Math.round(getAmplitudeEMA())));
